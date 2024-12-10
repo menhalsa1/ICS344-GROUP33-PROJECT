@@ -2,7 +2,7 @@
 import telnetlib
 
 # Target server and port
-HOST = "172.234.201.171"  # Cowrie server IP
+HOST = "      "  # Cowrie server IP
 PORT = 23                 # Cowrie Telnet port
 
 # Username and password lists
