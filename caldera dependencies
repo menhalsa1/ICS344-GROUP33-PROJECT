@@ -1,0 +1,41 @@
+#caldera commands dependencies 
+
+# Update system packages
+sudo apt update && sudo apt upgrade -y
+
+# Install Python and Pip
+sudo apt install python3 python3-pip -y
+
+# Install Git for cloning the repository
+sudo apt install git -y
+
+# Install build tools (required for some dependencies)
+sudo apt install build-essential -y
+
+# Install Python virtual environment tool
+sudo apt install python3-venv -y
+
+# Install Node.js and npm (required for UI plugins)
+sudo apt install nodejs npm -y
+
+# Install UPX (optional dependency for additional functionality)
+sudo apt install upx -y
+
+# Clone the Caldera repository from GitHub
+git clone https://github.com/mitre/caldera.git
+cd caldera
+
+# Set up a Python virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Install Node.js dependencies for the UI plugin
+cd plugins/viz
+npm install
+cd ../../
+
+# Start the Caldera server
+python3 server.py
